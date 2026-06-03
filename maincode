@@ -1,10 +1,12 @@
 from datetime import datetime # Imports the feature that allows python to understand dates in the format we will write them in
 
-import itertools # This part is for the infinite loop
+import itertools # For infinite loop
+
+priorityList = ["1", "2", "3"] # This list is used for the different possible priority levels to save effort potentially rewriting code
 
 def getValidDate(): # This part prompts the user for a valid date in YYYY-MM-DD format
 
-    for obj in itertools.count():
+    for obj in itertools.count(): # Infinite loop
 
         dateString = input("Due date (YYYY-MM-DD): ").strip()
 
@@ -24,3 +26,15 @@ def getValidDate(): # This part prompts the user for a valid date in YYYY-MM-DD 
             except ValueError:
                 
                 print("Invalid date format. Please use YYYY-MM-DD (e.g., 2026-06-15).\n")
+
+def getValidPriority(): # This will prompt the user for a priority level of the assignment; between 1 and 3
+
+    for obj in itertools.count():
+
+        priorityInput = input("Priority (3 = High, 2 = Medium, 1 = Low): ").strip()
+
+        if priorityInput in priorityList:
+
+            return int(priorityInput)
+
+        print("Invalid choice. Please enter 1, 2, or 3.\n")

@@ -8,24 +8,26 @@ def getValidDate(): # This part prompts the user for a valid date in YYYY-MM-DD 
 
     for obj in itertools.count(): # Infinite loop
 
-        dateString = input("Due date (YYYY-MM-DD): ").strip()
+        dateString = input("Due date (YYYY-MM-DD): ").strip() # Defines the string that will be used later for the due date
 
-        if dateString == "":
-            print("Error: Enter date")
-            return None
+        if dateString == "": # Checks if the string entered for the date is empty and prints an error if it is
+            print("Error: Enter date") # Tells the user that the date was not entered
+            return None # Restarts the function
         
         else:
             try:
 
                 # This part validates the format and ensures that it's a real and usable date
 
-                valid_date = datetime.strptime(dateString, "%Y-%m-%d").date()
+                valid_date = datetime.strptime(dateString, "%Y-%m-%d").date() # Converts the string for the date into a *date* object so Python can interpret it
 
                 return valid_date
 
-            except ValueError:
+            except ValueError: # Prints an error message if the function fails
                 
                 print("Invalid date format. Please use YYYY-MM-DD (e.g., 2026-06-15).\n")
+
+
 
 def getValidPriority(): # This will prompt the user for a priority level of the assignment; between 1 and 3
 
@@ -38,3 +40,97 @@ def getValidPriority(): # This will prompt the user for a priority level of the 
             return int(priorityInput)
 
         print("Invalid choice. Please enter 1, 2, or 3.\n")
+
+
+
+def collectTasks(scheduleName): # Collects tasks with due dates and priorities from the user
+
+    tasks = [] # Empty list for tasks
+
+    print("         TO-DO SCHEDULE BUILDER\n         Schedule name is: " + str(scheduleName) + " Tasks") # Creates the schedule title thing
+
+    print("Enter your tasks below. Type 'done' when finished.\n")
+
+    for obj in itertools.count(): # Infinite loop
+
+        name = input("Task name (or 'done' to finish): ").strip() # Asks the user to enter a new task or to end the process
+
+        if name.lower() == "done": # Checks if the input when put in all lowercase matches the string "done"
+
+            if not tasks: # If the task is unnamed, the program returns an error message
+
+                print("Error: Please enter at least one task before finishing.\n")
+
+                continue
+            
+            else:
+                pass
+
+            break
+
+        if not name: # If there is no name entered for the task, the program tells the user that the task must have a name
+
+            print("Task name cannot be empty.\n")
+
+            continue       
+
+        dueDate = getValidDate() # Collects the metadata for the task if it is valid
+
+        priority = getValidPriority() # Collects the metadata for the task if it is valid
+
+        tasks.append({ # Stores info in the "tasks" dictionary
+
+            "name": name,
+
+            "dueDate": dueDate,
+
+            "priority": priority
+
+        })
+
+        print(f"Added: '{name}'\n") # This tells the user that the task has been added to the list  
+
+    return tasks
+
+def displaySchedule(tasks): # This part sorts and prints the completed schedule
+
+    priorityLabels = {3: "High", 2: "Medium", 1: "Low"} # Creates the priority labels with names for each level
+
+   
+
+    # This section sorts the tasks, firstly by priority in descending order, then by date in ascending order
+
+    sortedTasks = sorted(tasks, key=lambda x: (-x["priority"], x["dueDate"]))
+
+   
+
+    print("              YOUR PRIORITIZED SCHEDULE") # Prints the line written
+
+
+    print(f"{'Task Name:':<25} | {'Due Date':<12} | {'Priority':<10}") # Prints out lines with the due date, task name, and priority in order for each task that was added
+
+
+    for task in sortedTasks: # Adds priority to each task and 
+
+        priorityValue = priorityLabels[task["priority"]]
+
+        print(f"{task['name']:<25} | {str(task['dueDate']):<12} | {priorityValue:<10}")
+
+
+if __name__ == "__main__": # This is the main loop which will tell the program to continue checking for the next thing to do
+
+    scheduleType = input("What quarter of the year are you in? (Enter answer as 'Q1', 'Q2', etc.) If your task does not require quarterly division, type 'N/A' ") # Asks what type of input 
+    
+    if (scheduleType == "Q1") or (scheduleType == "Q2") or (scheduleType == "Q3") or (scheduleType == "Q4"): # Sets the name of the schedule to a certain quarter + Taskes when the schedule for tasks is set as quarterly
+
+        userTasks = collectTasks(scheduleType)
+
+    elif (scheduleType == "N/A"): # Sets the name of the schedule to "Current Tasks" when the schedule for tasks is set as non-quarterly
+
+        userTasks = collectTasks("Current")
+
+    else:
+        print("Invalid schedule type.")
+        exit()
+
+    displaySchedule(userTasks)

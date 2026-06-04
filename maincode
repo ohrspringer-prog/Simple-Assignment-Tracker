@@ -12,7 +12,7 @@ def getValidDate(): # This part prompts the user for a valid date in YYYY-MM-DD 
 
         if dateString == "": # Checks if the string entered for the date is empty and prints an error if it is
             print("Error: Enter date") # Tells the user that the date was not entered
-            return None # Restarts the function
+            continue
         
         else:
             try:
@@ -119,9 +119,9 @@ def displaySchedule(tasks): # This part sorts and prints the completed schedule
 
 if __name__ == "__main__": # This is the main loop which will tell the program to continue checking for the next thing to do
 
-    scheduleType = input("What quarter of the year are you in? (Enter answer as 'Q1', 'Q2', etc.) If your task does not require quarterly division, type 'N/A' ") # Asks what type of input 
+    scheduleType = input("What quarter of the year are you in? (Enter answer as 'Q1', 'Q2', etc.) If your task does not require quarterly division, type 'N/A' ").strip().upper() # Asks what type of input 
     
-    if (scheduleType == "Q1") or (scheduleType == "Q2") or (scheduleType == "Q3") or (scheduleType == "Q4"): # Sets the name of the schedule to a certain quarter + Taskes when the schedule for tasks is set as quarterly
+    if (scheduleType in ["Q1", "Q2", "Q3", "Q4"]): # Sets the name of the schedule to a certain quarter + Taskes when the schedule for tasks is set as quarterly
 
         userTasks = collectTasks(scheduleType)
 
